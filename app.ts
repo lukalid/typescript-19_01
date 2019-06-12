@@ -1,73 +1,152 @@
-// let & const
-let variable: string;
-variable = "Some value";
-console.log(variable);
-variable = "Another value";
-console.log(variable);
+class Person {
 
-const maxLevels = 60;
-console.log(maxLevels);
-// maxLevels = 120; // nope, vanilla bby
+    name: string; // default is public
+    protected type: string;
+    private age: number = 23;
 
-// Block scope
-function reset() {
-    // console.log(variable); // nope, because it's declared in the next line
-    let variable = null;
-    console.log(variable);
-}
-reset();
-console.log(variable);
-
-// Arrow Functions
-const add = function (num1: number, num2: number): number {
-    return num1 + num2;
-};
-const multiply = (num1: number, num2: number): number => num1 * num2;
-const greet = (): void => console.log('hello');
-const greetFriend = (friend: string): void => console.log('hello ' + friend);
-
-// Default Parameters
-const countdown = (start: number = 10): void => {
-    while (start > 0) {
-        start--;
+    // username attr is created and gets the value
+    constructor(name: string, public username: string) {
+        this.name = name;
     }
-    console.log("Done.", start);
-};
 
-// Rest & Spread
-const numbers = [1, 2, 3, 4, 5];
-console.log(Math.max(1, 2, 3, 4, 5));
-console.log(Math.max(...numbers)); // spread
+    printAge() {
+        console.log(this.age);
+    }
 
-function makeArray(...args: number[]): number[] { // rest
-    return args;
+    setType(type: string) {
+        this.type = type;
+    }
+
+    getType() {
+        return this.type;
+    }
+
 }
-const arr = makeArray(1, 2, 3);
 
-// Destructuring
-const games: string[] = ["WoW", "LoL"];
-console.log(games[0], games[1]);
-// const game1 = games[0];
-// const game2 = games[1];
-const [game1, game2] = games;
-console.log(game1, game2);
+const person = new Person("Pera", "pera");
+console.log(person);
+person.setType("Gamer");
+person.printAge();
+console.log(person.getType());
 
-const userData = {
-    username: "pera",
-    password: "mika"
-};
-// const username = userData.username;
-// const password = userData.password;
-const { password, username } = userData; // names matter, order doesn't
-console.log(username, password);
+class Gamer extends Person {
 
-const { username: param1, password: param2 } = userData; // aliases
-console.log(param1, param2);
+    constructor(username: string) {
+        super("Luka", username);
+        this.type = "Gamer";
+    }
 
-// Template Literals
-const game = "WoW";
-// const report = "The best game is: " + game;
-const report = `Report:
-The best game is: ${game}
-`;
-console.log(report);
+}
+
+// Getters & Setters
+class Plant {
+    private _species: string = "Default";
+
+    get species() {
+        return this._species.trim();
+    }
+
+    set species(value: string) {
+        if (value.length > 3) {
+            this._species = value;
+        } else {
+            this._species = "Default";
+        }
+    }
+}
+
+let plant = new Plant();
+console.log(plant.species);
+plant.species = "Orc";
+console.log(plant.species);
+plant.species = "Hoops";
+console.log(plant.species);
+
+// Static Properties & Methods
+class Util {
+
+    static _pi: number = 3.14;
+
+    static calcCircumference(diameter: number): number {
+        return this._pi * diameter;
+    }
+
+    static get PI() {
+        return this._pi;
+    }
+
+}
+
+console.log(Util.PI);
+console.log(Util.calcCircumference(2));
+
+// Abstract classes
+abstract class Project {
+    projectName: string = "Default";
+    budget: number;
+
+    constructor(projectName: string, budget: number) {
+        this.projectName = projectName;
+        this.budget = budget;
+    }
+
+    abstract changeName(name: string): void;
+
+    calcBudget() {
+        return this.budget * 2;
+    }
+}
+
+class BestProject extends Project {
+
+    changeName(name: string): void {
+        this.projectName = "Best " + name;
+    }
+
+}
+
+class WorstProject extends Project {
+
+    changeName(name: string): void {
+        this.projectName = "Worst " + name;
+    }
+
+}
+
+let project: BestProject = new BestProject("FPIS", 0);
+project = new WorstProject("JAVA", 0);
+project.changeName("Mhmm");
+console.log(project.projectName);
+
+// Private Constructor
+
+class Singleton {
+
+    private static instance: Singleton;
+
+    private constructor() {}
+
+    public static getInstance() {
+        if (!Singleton.instance) {
+            Singleton.instance = new Singleton();
+        }
+        return Singleton.instance;
+    }
+
+}
+
+let singleton = Singleton.getInstance();
+
+// readonly property - can assign through constructor
+class ReadOnly {
+
+    public readonly value: string;
+
+    constructor(value: string) {
+        this.value = value;
+    }
+
+}
+
+let readonly = new ReadOnly("readonly");
+console.log(readonly.value);
