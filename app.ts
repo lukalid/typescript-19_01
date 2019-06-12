@@ -1,45 +1,32 @@
-// Simple Generic
-function echo(data: any) {
-    return data;
-}
-console.log(echo("Luka"));
-console.log(echo(23));
-console.log(echo({ name: "Luka", age: 23 }));
+class MyMap<T> {
 
-// Better Generic
-function betterEcho<T>(data: T): T {
-    return data;
-}
-console.log(betterEcho<string>("Luka"));
-console.log(betterEcho("Luka"));
-console.log(betterEcho(23));
-console.log(betterEcho({ name: "Luka", age: 23 }));
+    private map: { [key: string]: T } = {};
 
-// Built-in Generics
-const testResults: Array<number> = [1.94, 2.33];
-testResults.push(-2.99);
-// testResults.push("string"); // nope
-
-// Arrays
-function printAll<T>(args: T[]) {
-    args.forEach((element: T) => console.log(element));
-}
-printAll(["Apple", "Banana"]);
-
-// Generic Types
-const echo2: <T>(data: T) => T = betterEcho;
-console.log(echo2("Something"));
-
-// Generic Class
-class SimpleMath<T extends number, U extends number> { // T extends number | string | ...
-    baseValue: T;
-    multiplyValue: U;
-    calculate(): number {
-        return this.baseValue * this.multiplyValue;
+    setItem(key: string, item: T) {
+        this.map[key] = item;
     }
+
+    getItem(key: string) {
+        return this.map[key];
+    }
+
+    clear() {
+        this.map = {};
+    }
+
+    print() {
+        console.log("Map:");
+        for (let key in this.map) {
+            console.log(key + " -> " + this.map[key]);
+        }
+    }
+
 }
 
-const simpleMath = new SimpleMath<number, number>();
-simpleMath.baseValue = 10;
-simpleMath.multiplyValue = 20;
-console.log(simpleMath.calculate());
+const numberMap = new MyMap<number>();
+numberMap.setItem("apples", 10);
+numberMap.setItem("bananas", 2);
+console.log(numberMap.getItem("apples"));
+numberMap.print();
+numberMap.clear();
+numberMap.print();
