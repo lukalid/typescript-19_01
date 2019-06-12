@@ -1,82 +1,45 @@
-interface NamedPerson {
-    name: string;
-    sport?: string;
-    [propName: string]: any;
+// Simple Generic
+function echo(data: any) {
+    return data;
 }
+console.log(echo("Luka"));
+console.log(echo(23));
+console.log(echo({ name: "Luka", age: 23 }));
 
-function greet(person: NamedPerson): void { // at least have a name
-    console.log("Hello, " + person.name);
+// Better Generic
+function betterEcho<T>(data: T): T {
+    return data;
 }
+console.log(betterEcho<string>("Luka"));
+console.log(betterEcho("Luka"));
+console.log(betterEcho(23));
+console.log(betterEcho({ name: "Luka", age: 23 }));
 
-function changeName(person: NamedPerson, newName: string): void {
-    person.name = newName;
+// Built-in Generics
+const testResults: Array<number> = [1.94, 2.33];
+testResults.push(-2.99);
+// testResults.push("string"); // nope
+
+// Arrays
+function printAll<T>(args: T[]) {
+    args.forEach((element: T) => console.log(element));
 }
+printAll(["Apple", "Banana"]);
 
-const person: NamedPerson = {
-    name: "Luka",
-    age: 23 // -> binds to propName
-};
+// Generic Types
+const echo2: <T>(data: T) => T = betterEcho;
+console.log(echo2("Something"));
 
-greet(person);
-changeName(person, "Anna");
-greet(person);
-
-greet({ name: "Luka" }); // yep
-//greet({ name: "Luka", age: 23 }); // nope
-
-greet({ name: "Luka" }); // yep
-greet({ name: "Luka", sport: "Gaming" }); // yep
-
-// --------------------------------------------------
-
-interface Operation {
-    execute(num1: number, num2: number): number;
-}
-
-const adder: Operation = {
-    execute(number1: number, number2: number): number {
-        return number1 + number2;
-    }
-};
-console.log(adder.execute(1, 2));
-
-class Add implements Operation {
-    execute(number1: number, number2: number): number {
-        return number1 + number2;
-    }
-}
-class Multiply implements Operation {
-    execute(number1: number, number2: number): number {
-        return number1 * number2;
+// Generic Class
+class SimpleMath<T extends number, U extends number> { // T extends number | string | ...
+    baseValue: T;
+    multiplyValue: U;
+    calculate(): number {
+        return this.baseValue * this.multiplyValue;
     }
 }
 
-let operation = new Add();
-console.log(operation.execute(1, 2));
-operation = new Multiply();
-console.log(operation.execute(1, 2));
-
-// Function Types
-// Whatever uses this interface, must be a function of this type
-interface DoubleValueFunc {
-    (number1: number, number2: number): number;
-}
-
-let myDoubleFunction: DoubleValueFunc;
-myDoubleFunction = function (number1: number, number2: number) {
-    return (number1 + number2) * 2;
-}
-
-console.log(myDoubleFunction(1, 2));
-
-// Interface Inheritance
-interface AgedPerson extends NamedPerson {
-    age: number;
-}
-
-const oldPerson: AgedPerson = {
-    age: 60,
-    name: "Luka"
-}
-
-console.log(oldPerson);
+const simpleMath = new SimpleMath<number, number>();
+simpleMath.baseValue = 10;
+simpleMath.multiplyValue = 20;
+console.log(simpleMath.calculate());
