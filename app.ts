@@ -1,8 +1,7 @@
-/// <reference path="circleMath.ts" />
-/// <reference path="rectangleMath.ts" />
+// import { PI, calculateCircumference } from "./math/circle";
+import * as Circle from "./math/circle"; // leave out .ts   typescript auto looks for it
+import calc from "./math/rectangle";
 
-import CircleMath = MyMath.Circle; // alias
-
-console.log(MyMath.Circle.calculateCircumference(3));
-console.log(CircleMath.calculateCircumference(3));
-console.log(MyMath.calculateRectangle(10, 20));
+console.log(Circle.PI);
+console.log(Circle.calculateCircumference(3));
+console.log(calc(10, 20));

@@ -19,5 +19,8 @@
   "homepage": "https://github.com/lukalid/typescript-19_01#readme",
   "devDependencies": {
     "lite-server": "^2.5.3"
+  },
+  "dependencies": {
+    "systemjs": "^3.1.6"
   }
 }
